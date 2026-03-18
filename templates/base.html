@@ -9,7 +9,15 @@
         <a href="/">Accueil</a>
         <a href="/catalogue">Catalogue</a>
         <a href="/panier">Panier</a>
-        <a href="/login">Connexion</a>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('mes_commandes') }}">Mes Commandes</a>
+            {% if session.get('user_role') == 'admin' %}
+                <a href="{{ url_for('admin') }}">Administration</a>
+            {% endif %}
+            <a href="{{ url_for('deconnexion') }}">Se déconnecter</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Connexion</a>
+        {% endif %}
     </nav>
 
     <main>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Mes Commandes</h1>
+{% if commandes %}
+    {% for commande in commandes %}
+    <div>
+        <h3>Commande #{{ commande.id }}</h3>
+        <p>Date : {{ commande.date }}</p>
+        <p>Total : {{ commande.total }} €</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>Vous n'avez aucune commande</p>
+{% endif %}
+<a href="/catalogue">Continuer les achats</a>
+{% endblock %}
