@@ -12,7 +12,7 @@ def accueil():
 
 @app.route('/catalogue')
 def catalogue():
-    produits = db.get_all_produits()
+    produits = db.get_produits()
     return render_template('catalogue.html', produits=produits)
 
 @app.route('/inscription', methods=['GET', 'POST'])
