@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Votre Panier</h1
+<h1>Votre Panier</h1>
 {% if panier %}
     {% for article in panier %}
     <div>
         <strong>{{ article.nom }}</strong> 
         - {{ article.prix }} € x {{ article.quantite }}
         = {{ article.prix * article.quantite }} €
-        <a href="/supprimer_panier/{{ article.id }}">Supprimer</a>
+        <a href="/supprimer_du_panier/{{ article.id }}">Supprimer</a>
     </div>
     {% endfor %}
     
@@ -17,3 +17,5 @@
     {% else %}
     <p>Votre panier est vide</p>
     {% endif %}
+{% endblock %}
+    
