@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Votre Panier</h1
+{% if panier %}
+    {% for article in panier %}
+    <div>
+        <strong>{{ article.nom }}</strong> 
+        - {{ article.prix }} € x {{ article.quantite }}
+        = {{ article.prix * article.quantite }} €
+        <a href="/supprimer_panier/{{ article.id }}">Supprimer</a>
+    </div>
+    {% endfor %}
+    
+    <h2>Total : {{ total }} €</h2>
+    <a href="/valider_commande">Valider la commande</a>
+    <a href="/vider_panier">Vider le panier</a>
+    {% else %}
+    <p>Votre panier est vide</p>
+    {% endif %}
