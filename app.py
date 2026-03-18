@@ -105,7 +105,7 @@ def valider_commande():
 def mes_commandes():
     if 'user_id' not in session:
         return redirect('/login')
-    commandes = db.get_commandes(session['user_id'])
+    commandes = db.get_commandes_utilisateur(session['user_id'])
     return render_template('mes_commandes.html', commandes=commandes)
 
 @app.route('/admin')
@@ -113,7 +113,7 @@ def admin_dashboard():
     if session.get('user_role') != 'admin':
         return redirect('/login')
     produits = db.get_produits()
-    commandes = db.get_toutescommandes()
+    commandes = db.get_toutes_commandes()
     return render_template('admin.html', produits=produits, commandes=commandes)
 
 @app.route('/admin/ajouter_produit', methods=['POST'])
