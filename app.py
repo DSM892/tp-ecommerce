@@ -16,9 +16,6 @@ def catalogue():
     produits = db.get_all_produits()
     return render_template('catalogue.html', produits=produits)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
     if request.method == 'POST':
@@ -136,3 +133,6 @@ def admin_supprimer_produit(produit_id):
         return redirect('/login')
     db.supprimer_produit(produit_id)
     return redirect('/admin')
+
+ if __name__ == '__main__':
+    app.run(debug=True)
