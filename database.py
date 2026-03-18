@@ -80,7 +80,7 @@ class DatabaseManager:
     def modifier_produit(self, id, nom, prix, description, categorie, stock):
         conn = self.get_connexion()
         conn.execute(
-            'UPDATE produits SET nom=?, prix=?, descritpion=?, categorie=?, stock=? WHERE id=?',
+            'UPDATE produits SET nom=?, prix=?, description=?, categorie=?, stock=? WHERE id=?',
             (nom, prix, description, categorie, stock, id)
         )
         conn.commit()
@@ -117,7 +117,8 @@ class DatabaseManager:
             (email, mdp_hash)
         ).fetchone()
         conn.close()
-    
+        return user
+
     def creer_admin_default(self):
         self.inscrire('Admin', 'admin@shop.com', 'admin123', 'admin')
     
@@ -133,7 +134,7 @@ class DatabaseManager:
         for article in panier:
             conn.execute(
                 'INSERT INTO commande_articles (commande_id, produit_nom, quantite, prix_unitaire) VALUES (?,?,?,?)',
-                (commande_id, article['nom'], article['quantitie'], article['prix'])
+                (commande_id, article['nom'], article['quantite'], article['prix'])
             )
         conn.commit()
         conn.close()
