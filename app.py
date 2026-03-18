@@ -1,6 +1,5 @@
-from re import A
 from flask import Flask, render_template, request, redirect, session
-from datetime import DatabaseManager
+from database import DatabaseManager
 from datetime import datetime
 
 app = Flask(__name__)
@@ -13,7 +12,7 @@ def accueil():
 
 @app.route('/catalogue')
 def catalogue():
-    produits = db.get_all_produits()
+    produits = db.get_produits()
     return render_template('catalogue.html', produits=produits)
 
 @app.route('/inscription', methods=['GET', 'POST'])
