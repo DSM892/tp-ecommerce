@@ -80,7 +80,7 @@ class DatabaseManager:
     def modifier_produit(self, id, nom, prix, description, categorie, stock):
         conn = self.get_connexion()
         conn.execute(
-            'UPDATE produits SET nom=?, prix=?, descritpion=?, categorie=?, stock=? WHERE id=?',
+            'UPDATE produits SET nom=?, prix=?, description=?, categorie=?, stock=? WHERE id=?',
             (nom, prix, description, categorie, stock, id)
         )
         conn.commit()

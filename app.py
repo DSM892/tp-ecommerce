@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
-from database import DatabaseManager
+from database import DatabaseManager    
 from datetime import datetime
 
 app = Flask(__name__)
@@ -14,6 +14,8 @@ def accueil():
 def catalogue():
     produits = db.get_produits()
     return render_template('catalogue.html', produits=produits)
+
+
 
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
@@ -64,7 +66,7 @@ def ajouter_au_panier(produit_id):
                 article['quantite'] += 1
                 session['panier'] = panier
                 session.modified = True
-                return redirect('/panier')
+                return redirect('/catalogue')
 
         panier.append({
             'id': produit['id'],
@@ -81,14 +83,13 @@ def panier():
     total = sum(a['prix'] * a['quantite'] for a in panier)
     return render_template('panier.html', panier=panier, total=total)
 
-@app.route('/supprimer_panier/<int:produit_id>')
-def supprimer_du_panier(produit_id):
+@app.route('/supprimer_du_panier/<int:produit_id>')
+def supprimer_panier(produit_id):
     panier = session.get('panier', [])
-    for article in panier:
-        panier = [a for a in panier if a['id'] != produit_id]
-        session['panier'] = panier
-        session.modified = True
-        return redirect('/panier')
+    panier = [a for a in panier if a['id'] != produit_id]
+    session['panier'] = panier
+    session.modified = True
+    return redirect('/panier')
 
 @app.route('/vider_panier')
 def vider_panier():

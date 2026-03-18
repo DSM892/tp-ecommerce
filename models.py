@@ -14,16 +14,14 @@ class Produit:
     
     def __str__(self):
         return f"{self.nom} - {self.prix} €"
-
-
-class Utilisateur:
+    
+class utilisateur:
     def __init__(self, id, nom, email, mot_de_passe, role='client'):
         self.id = id
         self.nom = nom
         self.email = email
         self.mot_de_passe_hash = self.hasher(mot_de_passe)
         self.role = role
-
     @staticmethod
     def hasher(mdp):
         return hashlib.sha256(mdp.encode('utf-8')).hexdigest()
