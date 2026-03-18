@@ -1,7 +1,6 @@
-# les classes
 import hashlib
 
-class produit:
+class Produit:
     def __init__(self, id, nom, prix, description, categorie, stock=10):
         self.id = id
         self.nom = nom
