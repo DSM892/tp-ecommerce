@@ -75,13 +75,13 @@ def panier():
     return render_template('panier.html', panier=panier, total=total)
 
 @app.route('/supprimer_panier/<int:produit_id>')
-def supprimer_panier(produit_id):
+def supprimer_du_panier(produit_id):
     panier = session.get('panier', [])
     for article in panier:
-    panier = [a for a in panier if a['id'] != produit_id]
-    session['panier'] = panier
-    session.modified = True
-    return redirect('/panier')
+        panier = [a for a in panier if a['id'] != produit_id]
+        session['panier'] = panier
+        session.modified = True
+        return redirect('/panier')
 
 @app.route('/vider_panier')
 def vider_panier():
@@ -134,5 +134,5 @@ def admin_supprimer_produit(produit_id):
     db.supprimer_produit(produit_id)
     return redirect('/admin')
 
- if __name__ == '__main__':
+if __name__ == '__main__':
     app.run(debug=True)
