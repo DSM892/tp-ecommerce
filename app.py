@@ -1,6 +1,5 @@
-from re import A
 from flask import Flask, render_template, request, redirect, session
-from datetime import DatabaseManager
+from database import DatabaseManager
 from datetime import datetime
 
 app = Flask(__name__)
