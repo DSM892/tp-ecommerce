@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Nos produits</h1>
+
+{% for produit in produits %}
+<div class="produit-card">
+    <h3>{{ produit.nom }}</h3>
+    <p>{{ produit.description }}</p>
+    <p><strong>{{ produit.prix }} €</strong></p>
+    <a href="/ajouter_panier/{{ produit.id }}">
+        Ajouter au panier
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}
