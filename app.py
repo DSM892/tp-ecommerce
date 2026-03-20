@@ -24,7 +24,14 @@ def inscription():
         email = request.form['email']
         mdp = request.form['mot_de_passe']
         if db.inscrire(nom, email, mdp):
-            return redirect('/login')
+            user = db.connecter(email, mdp)
+            if user:
+                session['user_id'] = user['id']
+                session['user_nom'] = user['nom']
+                session['user_role'] = user['role']
+                return redirect('/')
+            else:
+                return redirect('/login')
         else:
             return render_template('register.html', erreur='Email déjà utilisé')
     return render_template('register.html')
@@ -68,7 +75,7 @@ def ajouter_au_panier(produit_id):
             'quantite': 1
         })
         session['panier'] = panier
-    return redirect('/catalogue')
+        return redirect('/panier')
 
 @app.route('/panier')
 def panier():
@@ -108,7 +115,7 @@ def mes_commandes():
     commandes = db.get_commandes_utilisateur(session['user_id'])
     return render_template('mes_commandes.html', commandes=commandes)
 
-@app.route('/admin')
+@app.route('/admin', endpoint='admin')
 def admin_dashboard():
     if session.get('user_role') != 'admin':
         return redirect('/login')
@@ -124,7 +131,8 @@ def admin_ajouter_produit():
         request.form['nom'],
         float(request.form['prix']),
         request.form['description'],
-        int(request.form['categorie'])
+        request.form['categorie'],
+        int(request.form['stock'])
     )
     return redirect('/admin')
 

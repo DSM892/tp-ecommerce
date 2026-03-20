@@ -115,12 +115,12 @@ class DatabaseManager:
         mdp_hash = hashlib.sha256(mot_de_passe.encode('utf-8')).hexdigest()
         conn = self.get_connexion()
         user = conn.execute(
-            'SELECT * FROM UTILISATEURS WHERE email=? AND mot_de_passe=?',
+            'SELECT * FROM utilisateurs WHERE email=? AND mot_de_passe=?',
             (email, mdp_hash)
         ).fetchone()
         conn.close()
         return user
-
+    
     def creer_admin_default(self):
         self.inscrire('Admin', 'admin@shop.com', 'admin123', 'admin')
     
