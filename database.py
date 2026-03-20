@@ -15,6 +15,7 @@ class DatabaseManager:
         conn = self.get_connexion()
         cursor = conn.cursor()
 
+
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS produits (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,6 +56,7 @@ class DatabaseManager:
                 prix_unitaire REAL
             )
         ''')
+        conn.close()
 
     def ajouter_produit(self, nom, prix, description, categorie, stock=10):
         conn = self.get_connexion()
