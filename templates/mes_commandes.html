@@ -1,16 +1,30 @@
 {% extends 'base.html' %}
+
 {% block content %}
+
 <h1>Mes Commandes</h1>
 {% if commandes %}
-    {% for commande in commandes %}
     <div>
-        <h3>Commande #{{ commande.id }}</h3>
-        <p>Date : {{ commande.date }}</p>
-        <p>Total : {{ commande.total }} €</p>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                {% for c in commandes %}
+                    <tr>
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.date }}</td>
+                        <td>{{ c.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/catalogue" style="display: inline-block; margin-top: 20px;">Continuer les achats</a>
     </div>
-    {% endfor %}
 {% else %}
     <p>Vous n'avez aucune commande</p>
 {% endif %}
-<a href="/catalogue">Continuer les achats</a>
+
 {% endblock %}

@@ -56,6 +56,9 @@ class DatabaseManager:
             )
         ''')
 
+        conn.commit()
+        conn.close()
+
     def ajouter_produit(self, nom, prix, description, categorie, stock=10):
         conn = self.get_connexion()
         conn.execute(
@@ -77,12 +80,14 @@ class DatabaseManager:
         conn.close()
         return produit
     
-    def modifier_produit(self, id, nom, prix, description, categorie, stock):
+    def modifier_produit(self, id, updates):
+        if not updates:
+            return
         conn = self.get_connexion()
-        conn.execute(
-            'UPDATE produits SET nom=?, prix=?, description=?, categorie=?, stock=? WHERE id=?',
-            (nom, prix, description, categorie, stock, id)
-        )
+        set_clause = ', '.join([f'{key}=?' for key in updates.keys()])
+        values = list(updates.values()) + [id]
+        query = f'UPDATE produits SET {set_clause} WHERE id=?'
+        conn.execute(query, values)
         conn.commit()
         conn.close()
     
@@ -135,6 +140,17 @@ class DatabaseManager:
             conn.execute(
                 'INSERT INTO commande_articles (commande_id, produit_nom, quantite, prix_unitaire) VALUES (?,?,?,?)',
                 (commande_id, article['nom'], article['quantite'], article['prix'])
+            )
+            stock = conn.execute(
+                    'SELECT stock FROM produits WHERE nom=?',
+                    (article['nom'],)
+                ).fetchone()[0]
+            if stock < article['quantite']:
+                raise ValueError(f"Stock insuffisant pour {article['nom']}")
+            stock -= article['quantite']
+            conn.execute(
+                'UPDATE produits SET stock=? WHERE nom=?',
+                (stock, article['nom'])
             )
         conn.commit()
         conn.close()
