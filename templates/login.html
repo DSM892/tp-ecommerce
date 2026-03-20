@@ -5,13 +5,10 @@
 <p style="color: red;">{{ erreur }}</p>
 {% endif %}
 <form method="POST">
-    <label>Email :</label>
-    <input type="email" name="email" required><br>
-
-    <label>Mot de passe :</label>
-    <input type="password" name="mot_de_passe" required><br>
-
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="mot_de_passe" placeholder="Mot de passe" required><br>
     <button type="submit">Se connecter</button>
+    <p>Pas de compte ?</p>
+    <a href="/inscription">S'inscrire</a>
 </form>
-<p>Pas de compte ? <a href="/inscription">S'inscrire</a></p>
 {% endblock %}

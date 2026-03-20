@@ -3,7 +3,7 @@ from database import DatabaseManager
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'votre_clé_secrète_ici'
+app.secret_key = 'votre_clé_secrète_ici' #pour chiffrer cookie
 db = DatabaseManager()
 
 @app.route('/')
@@ -14,8 +14,6 @@ def accueil():
 def catalogue():
     produits = db.get_produits()
     return render_template('catalogue.html', produits=produits)
-
-
 
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
@@ -136,6 +134,31 @@ def admin_ajouter_produit():
     )
     return redirect('/admin')
 
+@app.route('/admin/modifier_produit', methods=['POST'])
+def admin_modifier_produit():
+    if session.get('user_role') != 'admin':
+        return redirect('/login')
+    
+    produit_id = request.form['id']
+    updates = {}
+    
+    # Ajouter seulement les champs qui ont été remplis
+    if request.form.get('nom'):
+        updates['nom'] = request.form['nom']
+    if request.form.get('prix'):
+        updates['prix'] = float(request.form['prix'])
+    if request.form.get('description'):
+        updates['description'] = request.form['description']
+    if request.form.get('categorie'):
+        updates['categorie'] = request.form['categorie']
+    if request.form.get('stock'):
+        updates['stock'] = int(request.form['stock'])
+    
+    if updates:
+        db.modifier_produit(produit_id, updates)
+    
+    return redirect('/admin')
+
 @app.route('/admin/supprimer_produit/<int:produit_id>')
 def admin_supprimer_produit(produit_id):
     if session.get('user_role') != 'admin':
@@ -144,4 +167,4 @@ def admin_supprimer_produit(produit_id):
     return redirect('/admin')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

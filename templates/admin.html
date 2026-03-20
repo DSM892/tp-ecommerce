@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% block content %}
+
 <h1>Panel Administrateur</h1>
 
 <h2>Ajouter un Produit</h2>
@@ -11,18 +13,66 @@
     <input type="number" name="stock" placeholder="Stock" required>
     <button type="submit">Ajouter</button>
 </form>
+
+<h2>Modifier un produit</h2>
+<form method="post" action="/admin/modifier_produit">
+    <input type="number" name="id" placeholder="ID" required>
+    <input type="text" name="nom" placeholder="Nom (optionnel)">
+    <input type="number" name="prix" step="0.01" placeholder="Prix (optionnel)">
+    <input type="text" name="description" placeholder="Description (optionnel)">
+    <input type="text" name="categorie" placeholder="Catégorie (optionnel)">
+    <input type="number" name="stock" placeholder="Stock (optionnel)">
+    <button type="submit">Modifier</button>
+</form>
+
 <h2>Produits actuels</h2>
-{% for p in produits %}
 <div>
-    {{ p.nom }} - {{ p.prix }} € - {{ p.description }} - {{ p.categorie }} - {{ p.stock }} 
-    <a href="/admin/supprimer_produit/{{ p.id }}">Supprimer</a>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Description</th>
+            <th>Catégorie</th>
+            <th>Stock</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for p in produits %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.nom }}</td>
+                <td>{{ p.prix }} €</td>
+                <td>{{ p.description }}</td>
+                <td>{{ p.categorie }}</td>
+                <td>{{ p.stock }}</td>
+                <td><a href="/admin/supprimer_produit/{{ p.id }}">Supprimer</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endfor %}
 
 <h2>Toutes les commandes</h2>
-{% for c in commandes %}
-<div> 
-    {{ c.id }} - {{ c.client_nom }} - {{ c.total }} € - {{ c.date }}
+<div>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Nom du client</th>
+            <th>Total</th>
+            <th>Date</th>
+        </thead>
+        <tbody>
+            {% for c in commandes %}
+            <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.client_nom }}</td>
+                <td>{{ c.total }} €</td>
+                <td>{{ c.date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-{% endfor %}
+
 {% endblock %}

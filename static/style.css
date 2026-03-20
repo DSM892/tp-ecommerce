@@ -1,4 +1,7 @@
-body { font-family: Arial, sans-serif; margin: 0; }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
 
 nav {
     background: #1B2A4A;
@@ -7,8 +10,128 @@ nav {
 
 nav a {
     color: white;
+    font-size: 32px;
     text-decoration: none;
     margin-right: 20px;
+    border-bottom: 2px solid transparent;
 }
 
-main { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+nav a:hover {
+    border-bottom: 2px solid white;
+    transition: 0.2s ease-in-out;
+}
+
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-size: 26px;
+}
+
+/* Titre des pages */
+main h1 {
+    text-align: center;
+    padding: 15px;
+    border-bottom: 5px solid #1B2A4A;
+    border-radius: 15px;
+    background: #ced7e8;
+}
+
+main a {
+    text-decoration: none;
+    background: #1b2a4a;
+    color: white;
+    opacity: 1;
+    padding: 7px 15px;
+    border-radius: 5px;
+}
+
+main a:hover {
+    opacity: 0.85;
+    transition: 0.2s ease-in;
+}
+
+/* Catalogue */
+.produit-card {
+    background: #ced7e8;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.produit-card h3 {
+    margin: 0;
+    font-size: 36px;
+}
+
+.produit-card p {
+    margin: 10px 0;
+}
+
+.produit-card a {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Panier */
+.panier-card {
+    background: #ced7e8;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.panier-card h3 {
+    margin: 0;
+    font-size: 36px;
+}
+
+.panier-card p {
+    margin: 10px 0;
+}
+
+.panier-card a {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Login et Register */
+main form {
+    width: 32%;
+    margin: 0 auto;
+}
+
+main form input {
+    font-size: 26px;
+    margin: 4px 0;
+    padding: 5px;
+}
+
+main form button {
+    font-size: 26px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+main form p {
+    margin: 30px 0 7px 0;
+}
+
+main form a {
+    display: inline-block;
+    margin-top: 0;
+}
+
+/* Admin Dashboard et Mes commandes */
+main table {
+    border-collapse: collapse;
+}
+
+main table th, td {
+    border: 2px solid black;
+    padding: 0 15px;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
