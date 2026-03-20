@@ -3,10 +3,9 @@
 <h1>Votre Panier</h1>
 {% if panier %}
     {% for article in panier %}
-    <div>
-        <strong>{{ article.nom }}</strong> 
-        - {{ article.prix }} € x {{ article.quantite }}
-        = {{ article.prix * article.quantite }} €
+    <div class="panier-card">
+        <h3>{{ article.nom }}</h3>
+        <p>{{ article.prix }} € x {{ article.quantite }} = {{ article.prix * article.quantite }} €</p>
         <a href="/supprimer_panier/{{ article.id }}">Supprimer</a>
     </div>
     {% endfor %}
