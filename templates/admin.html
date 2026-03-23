@@ -2,77 +2,165 @@
 
 {% block content %}
 
-<h1>Panel Administrateur</h1>
-
-<h2>Ajouter un Produit</h2>
-<form method="post" action="/admin/ajouter_produit">
-    <input type="text" name="nom" placeholder="Nom" required>
-    <input type="number" name="prix" step="0.01" placeholder="Prix" required>
-    <input type="text" name="description" placeholder="Description" required>
-    <input type="text" name="categorie" placeholder="Catégorie" required>
-    <input type="number" name="stock" placeholder="Stock" required>
-    <button type="submit">Ajouter</button>
-</form>
-
-<h2>Modifier un produit</h2>
-<form method="post" action="/admin/modifier_produit">
-    <input type="number" name="id" placeholder="ID" required>
-    <input type="text" name="nom" placeholder="Nom (optionnel)">
-    <input type="number" name="prix" step="0.01" placeholder="Prix (optionnel)">
-    <input type="text" name="description" placeholder="Description (optionnel)">
-    <input type="text" name="categorie" placeholder="Catégorie (optionnel)">
-    <input type="number" name="stock" placeholder="Stock (optionnel)">
-    <button type="submit">Modifier</button>
-</form>
-
-<h2>Produits actuels</h2>
-<div>
-    <table>
-        <thead>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prix</th>
-            <th>Description</th>
-            <th>Catégorie</th>
-            <th>Stock</th>
-            <th>Action</th>
-        </thead>
-        <tbody>
-            {% for p in produits %}
-            <tr>
-                <td>{{ p.id }}</td>
-                <td>{{ p.nom }}</td>
-                <td>{{ p.prix }} €</td>
-                <td>{{ p.description }}</td>
-                <td>{{ p.categorie }}</td>
-                <td>{{ p.stock }}</td>
-                <td><a href="/admin/supprimer_produit/{{ p.id }}">Supprimer</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="page-header">
+    <h1>⚙️ Panel Administrateur</h1>
+    <p>Gérez vos produits et commandes</p>
 </div>
 
-<h2>Toutes les commandes</h2>
-<div>
-    <table>
-        <thead>
-            <th>ID</th>
-            <th>Nom du client</th>
-            <th>Total</th>
-            <th>Date</th>
-        </thead>
-        <tbody>
-            {% for c in commandes %}
-            <tr>
-                <td>{{ c.id }}</td>
-                <td>{{ c.client_nom }}</td>
-                <td>{{ c.total }} €</td>
-                <td>{{ c.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="admin-container">
+    <!-- Section Ajouter un produit -->
+    <section class="admin-section">
+        <div class="section-header">
+            <h2>➕ Ajouter un produit</h2>
+            <p>Ajoutez un nouveau produit à votre catalogue</p>
+        </div>
+        <form method="post" action="/admin/ajouter_produit" class="admin-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom du produit</label>
+                    <input type="text" name="nom" placeholder="Ex: Laptop Gaming" required>
+                </div>
+                <div class="form-group">
+                    <label>Prix (€)</label>
+                    <input type="number" name="prix" step="0.01" placeholder="99.99" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" name="description" placeholder="Description détaillée" required>
+                </div>
+                <div class="form-group">
+                    <label>Catégorie</label>
+                    <input type="text" name="categorie" placeholder="Ex: Électronique" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" name="stock" placeholder="0" required>
+                </div>
+            </div>
+            <button type="submit" class="btn-add-product">✅ Ajouter le produit</button>
+        </form>
+    </section>
+
+    <!-- Section Modifier un produit -->
+    <section class="admin-section">
+        <div class="section-header">
+            <h2>✏️ Modifier un produit</h2>
+            <p>Mettez à jour les informations d'un produit existant</p>
+        </div>
+        <form method="post" action="/admin/modifier_produit" class="admin-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>ID du produit *</label>
+                    <input type="number" name="id" placeholder="ID" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom (optionnel)</label>
+                    <input type="text" name="nom" placeholder="Nouveau nom">
+                </div>
+                <div class="form-group">
+                    <label>Prix (optionnel)</label>
+                    <input type="number" name="prix" step="0.01" placeholder="Nouveau prix">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Description (optionnel)</label>
+                    <input type="text" name="description" placeholder="Nouvelle description">
+                </div>
+                <div class="form-group">
+                    <label>Catégorie (optionnel)</label>
+                    <input type="text" name="categorie" placeholder="Nouvelle catégorie">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stock (optionnel)</label>
+                    <input type="number" name="stock" placeholder="Nouveau stock">
+                </div>
+            </div>
+            <button type="submit" class="btn-update-product">✏️ Modifier le produit</button>
+        </form>
+    </section>
+
+    <!-- Section Produits actuels -->
+    <section class="admin-section">
+        <div class="section-header">
+            <h2>📦 Produits actuels ({{ produits|length }})</h2>
+            <p>Liste complète de vos produits</p>
+        </div>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Description</th>
+                        <th>Catégorie</th>
+                        <th>Stock</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in produits %}
+                    <tr class="product-row {% if p.stock == 0 %}out-of-stock{% endif %}">
+                        <td class="product-id">#{{ p.id }}</td>
+                        <td class="product-name">{{ p.nom }}</td>
+                        <td class="product-price">{{ p.prix }}€</td>
+                        <td class="product-desc">{{ p.description }}</td>
+                        <td><span class="category-badge">{{ p.categorie }}</span></td>
+                        <td class="product-stock">
+                            <span class="stock-indicator {% if p.stock > 10 %}high{% elif p.stock > 0 %}low{% else %}empty{% endif %}">
+                                {{ p.stock }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/admin/supprimer_produit/{{ p.id }}" class="btn-delete-product" onclick="return confirm('Confirmer la suppression ?')">🗑️ Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section Commandes -->
+    <section class="admin-section">
+        <div class="section-header">
+            <h2>🛒 Toutes les commandes ({{ commandes|length }})</h2>
+            <p>Historique complet des commandes clients</p>
+        </div>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>N° Commande</th>
+                        <th>Client</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in commandes %}
+                    <tr class="order-row">
+                        <td class="order-id">#{{ c.id }}</td>
+                        <td class="client-name">{{ c.client_nom }}</td>
+                        <td class="order-total">{{ c.total }}€</td>
+                        <td class="order-date">{{ c.date }}</td>
+                        <td><span class="status-badge status-completed">✅ Livrée</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 </div>
 
 {% endblock %}

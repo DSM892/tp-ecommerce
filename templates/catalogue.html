@@ -1,17 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Nos produits</h1>
-
-{% for produit in produits %}
-<div class="produit-card">
-    <h3>{{ produit.nom }}</h3>
-    <p>{{ produit.description }}</p>
-    <p><strong>{{ produit.prix }} €</strong></p>
-    <a href="/ajouter_au_panier/{{ produit.id }}">
-        Ajouter au panier
-    </a>
+<div class="page-header">
+    <h1>🏬 Nos Produits</h1>
+    <p>Parcourez notre catalogue complet</p>
 </div>
-{% endfor %}
 
+<div class="products-grid">
+    {% for p in produits %}
+    <div class="produit-card">
+        <div class="produit-header">
+            <span class="stock-badge {% if p.stock > 10 %}in-stock{% elif p.stock > 0 %}low-stock{% else %}out-stock{% endif %}">
+                {% if p.stock > 10 %}
+                    ✅ En stock
+                {% elif p.stock > 0 %}
+                    ⚠️ Stock limité
+                {% else %}
+                    ❌ Rupture
+                {% endif %}
+            </span>
+        </div>
+        <h3>{{ p.nom }}</h3>
+        <p class="product-description">{{ p.description }}</p>
+        <div class="product-info">
+            <span class="stock-info">{{ p.stock }} disponible(s)</span>
+        </div>
+        <p class="product-price">{{ p.prix }}€</p>
+        <a href="/ajouter_au_panier/{{ p.id }}" class="btn-add-cart" {% if p.stock == 0 %}disabled{% endif %}>
+            🛒 Ajouter au panier
+        </a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

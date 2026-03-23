@@ -1,7 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Bienvenue sur EPSI B1 Shop !</h1>
-<p>Découvrez nos produits incroyables.</p>
-<a href="/catalogue">Voir le catalogue</a>
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Bienvenue sur EPSI B1 Shop</h1>
+        <p class="hero-subtitle">Découvrez une sélection exceptionnelle de produits de qualité</p>
+        <a href="/catalogue" class="hero-cta">Voir notre catalogue</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Livraison rapide</h3>
+        <p>Recevez vos commandes en 24h</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Sécurisé</h3>
+        <p>Paiement 100% sécurisé</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">😊</div>
+        <h3>Satisfait ou remboursé</h3>
+        <p>30 jours pour changer d'avis</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <h3>5 étoiles</h3>
+        <p>4.9/5 de satisfaction client</p>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Commencez vos achats dès maintenant</h2>
+    <p>Des milliers de produits vous attendent</p>
+    <a href="/catalogue" class="cta-button">Découvrir les produits</a>
+</section>
 {% endblock %}

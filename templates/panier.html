@@ -1,20 +1,47 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Votre Panier</h1>
+<div class="page-header">
+    <h1>🛒 Votre Panier</h1>
+</div>
+
 {% if panier %}
-    {% for article in panier %}
-    <div class="panier-card">
-        <h3>{{ article.nom }}</h3>
-        <p>{{ article.prix }} € x {{ article.quantite }} = {{ article.prix * article.quantite }} €</p>
-        <a href="/supprimer_panier/{{ article.id }}">Supprimer</a>
+    <div class="cart-container">
+        <div class="cart-items">
+            {% for article in panier %}
+            <div class="panier-card">
+                <div class="cart-item-info">
+                    <h3>{{ article.nom }}</h3>
+                    <p class="item-price">{{ article.prix }}€ x <span class="quantity">{{ article.quantite }}</span></p>
+                    <p class="item-total"><strong>= {{ article.prix * article.quantite }}€</strong></p>
+                </div>
+                <a href="/supprimer_du_panier/{{ article.id }}" class="btn-delete">
+                    🗑️ Supprimer
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary">
+            <div class="summary-box">
+                <h2>Récapitulatif</h2>
+                <div class="summary-row">
+                    <span>Total :</span>
+                    <span class="total-amount">{{ total }} €</span>
+                </div>
+                <a href="/valider_commande" class="btn-checkout">✅ Valider la commande</a>
+                <a href="/vider_panier" class="btn-empty">🧹 Vider le panier</a>
+                <a href="/catalogue" class="btn-continue">Continuer les achats</a>
+            </div>
+        </div>
     </div>
-    {% endfor %}
-    
-    <h2>Total : {{ total }} €</h2>
-    <a href="/valider_commande">Valider la commande</a>
-    <a href="/vider_panier">Vider le panier</a>
 {% else %}
-    <p>Votre panier est vide</p>
-    {% endif %}
+    <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <h2>Votre panier est vide</h2>
+        <p>Découvrez nos produits et commencez vos achats !</p>
+        <a href="/catalogue" class="btn-discover">Découvrir le catalogue</a>
+    </div>
+{% endif %}
 {% endblock %}
     
