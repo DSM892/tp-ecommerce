@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev")
 db = DatabaseManager()
 
 @app.route('/')
