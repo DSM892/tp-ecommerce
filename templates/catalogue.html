@@ -28,9 +28,17 @@
             </div>
             <p class="product-price">{{ p.prix }}€</p>
         </a>
-        <a href="/ajouter_au_panier/{{ p.id }}" class="btn-add-cart" {% if p.stock == 0 %}disabled{% endif %}>
-            🛒 Ajouter au panier
-        </a>
+        {% if p.stock > 0 %}
+        <form method="POST" action="/ajouter_au_panier/{{ p.id }}" class="add-to-cart-form">
+            <div class="quantity-selector">
+                <label for="qty_{{ p.id }}">Quantité :</label>
+                <input type="number" id="qty_{{ p.id }}" name="quantite" min="1" max="{{ p.stock }}" value="1" required>
+            </div>
+            <button type="submit" class="btn-add-cart">🛒 Ajouter au panier</button>
+        </form>
+        {% else %}
+        <button class="btn-add-cart" disabled>❌ Rupture</button>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

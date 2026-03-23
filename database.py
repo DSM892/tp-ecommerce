@@ -58,6 +58,20 @@ class DatabaseManager:
                 )
             ''')
 
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS avis (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    produit_id INTEGER NOT NULL,
+                    utilisateur_id INTEGER,
+                    utilisateur_nom TEXT,
+                    note INTEGER NOT NULL,
+                    commentaire TEXT,
+                    date TEXT,
+                    FOREIGN KEY (produit_id) REFERENCES produits(id),
+                    FOREIGN KEY (utilisateur_id) REFERENCES utilisateurs(id)
+                )
+            ''')
+
             conn.commit()
         finally:
             conn.close()
@@ -194,3 +208,122 @@ class DatabaseManager:
         finally:
             conn.close()
         return commandes
+
+    def ajouter_avis(self, produit_id, utilisateur_id, utilisateur_nom, note, commentaire):
+        from datetime import datetime
+        conn = self.get_connexion()
+        try:
+            date = datetime.now().strftime('%Y-%m-%d %H:%M')
+            conn.execute(
+                'INSERT INTO avis (produit_id, utilisateur_id, utilisateur_nom, note, commentaire, date) VALUES (?,?,?,?,?,?)',
+                (produit_id, utilisateur_id, utilisateur_nom, note, commentaire, date)
+            )
+            conn.commit()
+            return True
+        except Exception as e:
+            return False
+        finally:
+            conn.close()
+
+    def get_avis_produit(self, produit_id):
+        conn = self.get_connexion()
+        try:
+            avis = conn.execute(
+                'SELECT * FROM avis WHERE produit_id=? ORDER BY date DESC',
+                (produit_id,)
+            ).fetchall()
+        finally:
+            conn.close()
+        return avis
+
+    def get_moyenne_note_produit(self, produit_id):
+        conn = self.get_connexion()
+        try:
+            result = conn.execute(
+                'SELECT AVG(note) as moyenne FROM avis WHERE produit_id=?',
+                (produit_id,)
+            ).fetchone()
+            moyenne = result['moyenne'] if result['moyenne'] else 0
+        finally:
+            conn.close()
+        return round(moyenne, 1)
+
+    def get_nombre_avis_produit(self, produit_id):
+        conn = self.get_connexion()
+        try:
+            result = conn.execute(
+                'SELECT COUNT(*) as nombre FROM avis WHERE produit_id=?',
+                (produit_id,)
+            ).fetchone()
+            nombre = result['nombre']
+        finally:
+            conn.close()
+        return nombre
+
+    def get_articles_commande(self, commande_id):
+        conn = self.get_connexion()
+        try:
+            articles = conn.execute(
+                'SELECT * FROM commande_articles WHERE commande_id=?',
+                (commande_id,)
+            ).fetchall()
+        finally:
+            conn.close()
+        return articles
+
+    def get_utilisateurs(self):
+        conn = self.get_connexion()
+        try:
+            utilisateurs = conn.execute('SELECT id, nom, email, role FROM utilisateurs').fetchall()
+        finally:
+            conn.close()
+        return utilisateurs
+
+    def get_utilisateur(self, user_id):
+        conn = self.get_connexion()
+        try:
+            utilisateur = conn.execute('SELECT id, nom, email, role FROM utilisateurs WHERE id=?', (user_id,)).fetchone()
+        finally:
+            conn.close()
+        return utilisateur
+
+    def modifier_role_utilisateur(self, user_id, new_role):
+        conn = self.get_connexion()
+        try:
+            conn.execute('UPDATE utilisateurs SET role=? WHERE id=?', (new_role, user_id))
+            conn.commit()
+            return True
+        finally:
+            conn.close()
+
+    def modifier_mot_de_passe(self, user_id, ancien_mdp, nouveau_mdp):
+        import hashlib
+        ancien_mdp_hash = hashlib.sha256(ancien_mdp.encode('utf-8')).hexdigest()
+        nouveau_mdp_hash = hashlib.sha256(nouveau_mdp.encode('utf-8')).hexdigest()
+        
+        conn = self.get_connexion()
+        try:
+            # Vérifier que l'ancien mot de passe est correct
+            utilisateur = conn.execute(
+                'SELECT * FROM utilisateurs WHERE id=? AND mot_de_passe=?',
+                (user_id, ancien_mdp_hash)
+            ).fetchone()
+            
+            if not utilisateur:
+                return False
+            
+            # Modifier le mot de passe
+            conn.execute('UPDATE utilisateurs SET mot_de_passe=? WHERE id=?', (nouveau_mdp_hash, user_id))
+            conn.commit()
+            return True
+        finally:
+            conn.close()
+
+    def supprimer_utilisateur(self, user_id):
+        conn = self.get_connexion()
+        try:
+            conn.execute('DELETE FROM utilisateurs WHERE id=?', (user_id,))
+            conn.commit()
+            return True
+        finally:
+            conn.close()

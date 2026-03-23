@@ -45,15 +45,19 @@
 
             <div class="action-buttons">
                 {% if produit.stock > 0 %}
-                    <a href="/ajouter_au_panier/{{ produit.id }}" class="btn-add-cart btn-large">
-                        🛒 Ajouter au panier
-                    </a>
+                    <form method="POST" action="/ajouter_au_panier/{{ produit.id }}" class="add-to-cart-form-detail">
+                        <div class="quantity-selector">
+                            <label for="qty_produit">Quantité :</label>
+                            <input type="number" id="qty_produit" name="quantite" min="1" max="{{ produit.stock }}" value="1" required>
+                        </div>
+                        <button type="submit" class="btn-add-cart btn-large">🛒 Ajouter au panier</button>
+                    </form>
                 {% else %}
                     <button class="btn-add-cart btn-large" disabled>
                         ❌ Rupture de stock
                     </button>
                 {% endif %}
-                <a href="/catalogue" class="btn-secondary">
+                <a href="/catalogue" class="btn-product-continue">
                     ↩️ Continuer vos achats
                 </a>
             </div>
@@ -61,153 +65,96 @@
     </div>
 </div>
 
-<style>
-.back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
-}
+<!-- Section des avis -->
+<div class="reviews-section">
+    <div class="reviews-header">
+        <h2>Avis clients</h2>
+        <div class="rating-summary">
+            <div class="average-rating">
+                <span class="rating-number">{{ moyenne_note }}</span>
+                <div class="stars">
+                    {% for i in range(5) %}
+                        {% if i < moyenne_note|int %}
+                            <span class="star filled">★</span>
+                        {% elif i < moyenne_note %}
+                            <span class="star half">★</span>
+                        {% else %}
+                            <span class="star empty">★</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="review-count">{{ nombre_avis }} avis</span>
+            </div>
+        </div>
+    </div>
 
-.back-link:hover {
-    text-decoration: underline;
-}
+    <!-- Formulaire pour ajouter un avis -->
+    <div class="add-review-section">
+        {% if session.get('user_id') %}
+            <h3>Laisser un avis</h3>
+            <form method="POST" action="/ajouter_avis/{{ produit.id }}" class="review-form">
+                <div class="form-group">
+                    <label for="note">Votre note</label>
+                    <div class="rating-input">
+                        <input type="radio" id="star5" name="note" value="5" required>
+                        <label for="star5" class="star-label">★</label>
+                        
+                        <input type="radio" id="star4" name="note" value="4">
+                        <label for="star4" class="star-label">★</label>
+                        
+                        <input type="radio" id="star3" name="note" value="3">
+                        <label for="star3" class="star-label">★</label>
+                        
+                        <input type="radio" id="star2" name="note" value="2">
+                        <label for="star2" class="star-label">★</label>
+                        
+                        <input type="radio" id="star1" name="note" value="1">
+                        <label for="star1" class="star-label">★</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="commentaire">Votre avis (optionnel)</label>
+                    <textarea id="commentaire" name="commentaire" class="review-textarea" placeholder="Partagez votre expérience..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit-review">Publier mon avis</button>
+            </form>
+        {% else %}
+            <div class="login-prompt">
+                <p>Connectez-vous pour laisser un avis</p>
+                <a href="/login" class="btn-login">Se connecter</a>
+            </div>
+        {% endif %}
+    </div>
 
-.product-detail-container {
-    display: flex;
-    gap: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.product-image {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.image-placeholder {
-    width: 100%;
-    max-width: 400px;
-    aspect-ratio: 1;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 80px;
-}
-
-.product-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.product-details h1 {
-    font-size: 32px;
-    color: #333;
-    margin: 0;
-}
-
-.product-meta {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.categorie-badge {
-    display: inline-block;
-    background-color: #e7f3ff;
-    color: #0066cc;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.price-section {
-    border-top: 2px solid #e0e0e0;
-    border-bottom: 2px solid #e0e0e0;
-    padding: 20px 0;
-}
-
-.product-price {
-    font-size: 36px;
-    font-weight: bold;
-    color: #28a745;
-    margin: 0;
-}
-
-.description-section,
-.stock-section {
-    line-height: 1.6;
-    color: #555;
-}
-
-.description-section h2,
-.stock-section h3 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-large {
-    flex: 1;
-    padding: 15px 20px;
-    font-size: 16px;
-    min-height: 50px;
-}
-
-.btn-secondary {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 20px;
-    background-color: #6c757d;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
-
-@media (max-width: 768px) {
-    .product-detail-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .product-details h1 {
-        font-size: 24px;
-    }
-
-    .product-price {
-        font-size: 28px;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .btn-large,
-    .btn-secondary {
-        width: 100%;
-    }
-}
-</style>
+    <!-- Affichage des avis -->
+    <div class="reviews-list">
+        {% if avis %}
+            <h3>Avis vérifiés</h3>
+            {% for review in avis %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <span class="reviewer-name">{{ review.utilisateur_nom }}</span>
+                            <span class="review-date">{{ review.date }}</span>
+                        </div>
+                        <div class="review-stars">
+                            {% for i in range(5) %}
+                                {% if i < review.note %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star empty">★</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if review.commentaire %}
+                        <p class="review-text">{{ review.commentaire }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-reviews">Aucun avis pour le moment. Soyez le premier à évaluer ce produit !</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

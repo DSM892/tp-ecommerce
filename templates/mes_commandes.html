@@ -16,6 +16,7 @@
                     <th>Date</th>
                     <th>Total</th>
                     <th>Statut</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,9 @@
                         <td>
                             <span class="order-status status-completed">✅ Livrée</span>
                         </td>
+                        <td>
+                            <a href="/detail_commande/{{ c.id }}" class="btn-view-details">Voir détail</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -47,5 +51,6 @@
         <a href="/catalogue" class="btn-discover">Découvrir le catalogue</a>
     </div>
 {% endif %}
+
 
 {% endblock %}
