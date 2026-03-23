@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <h1>Stock Insuffisant</h1>
+        
+        <div class="error-details">
+            <h2>{{ produit.nom }}</h2>
+            <p class="error-message">La quantité demandée dépasse le stock disponible.</p>
+            
+            <div class="stock-info-box">
+                <div class="info-row">
+                    <span class="label">Stock disponible :</span>
+                    <span class="value">{{ produit.stock }} article(s)</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Quantité demandée :</span>
+                    <span class="value error">{{ quantite_demandee }} article(s)</span>
+                </div>
+                {% if quantite_actuelle %}
+                <div class="info-row">
+                    <span class="label">Quantité actuelle dans le panier :</span>
+                    <span class="value">{{ quantite_actuelle }} article(s)</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="suggestion">
+                <p>Nous ne pouvons vous ajouter que <strong>{{ produit.stock }} article(s)</strong> maximum.</p>
+                <p>Réessayez en sélectionnant une quantité inférieure.</p>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/catalogue" class="btn-primary">← Retour au catalogue</a>
+            <a href="/produit/{{ produit.id }}" class="btn-secondary">Voir le produit</a>
+            <a href="/panier" class="btn-secondary">→ Voir mon panier</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 40px 20px;
+}
+
+.error-card {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-hover);
+    text-align: center;
+    border-top: 5px solid var(--danger);
+}
+
+.error-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.error-card h1 {
+    font-size: 36px;
+    color: var(--danger);
+    margin: 0 0 20px 0;
+}
+
+.error-details {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.error-details h2 {
+    font-size: 22px;
+    color: var(--primary);
+    border: none;
+    margin: 0 0 10px 0;
+}
+
+.error-message {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.stock-info-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--danger);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+}
+
+.info-row:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.label {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.value {
+    color: #333;
+    font-weight: 500;
+}
+
+.value.error {
+    color: var(--danger);
+}
+
+.suggestion {
+    background: rgba(231, 76, 60, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--danger);
+}
+
+.suggestion p {
+    margin: 10px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.suggestion p:first-child {
+    margin-top: 0;
+}
+
+.suggestion p:last-child {
+    margin-bottom: 0;
+}
+
+.suggestion strong {
+    color: var(--danger);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    display: inline-block;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .error-card {
+        padding: 40px 25px;
+    }
+
+    .error-card h1 {
+        font-size: 28px;
+    }
+
+    .error-details h2 {
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}

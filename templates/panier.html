@@ -15,9 +15,16 @@
                     <p class="item-price">{{ article.prix }}€ x <span class="quantity">{{ article.quantite }}</span></p>
                     <p class="item-total"><strong>= {{ article.prix * article.quantite }}€</strong></p>
                 </div>
-                <a href="/supprimer_du_panier/{{ article.id }}" class="btn-delete">
-                    🗑️ Supprimer
-                </a>
+                <div class="cart-item-actions">
+                    <div class="quantity-controls">
+                        <a href="/diminuer_quantite/{{ article.id }}" class="btn-quantity-minus">−</a>
+                        <span class="quantity-display">{{ article.quantite }}</span>
+                        <a href="/augmenter_quantite/{{ article.id }}" class="btn-quantity-plus">+</a>
+                    </div>
+                    <a href="/supprimer_du_panier/{{ article.id }}" class="btn-delete">
+                        🗑️ Supprimer
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <a href="/mes_commandes" class="back-link">← Retour à mes commandes</a>
+</div>
+
+<div class="order-detail-container">
+    <div class="order-detail-header">
+        <h1>Détail de la Commande #{{ commande.id }}</h1>
+        <div class="order-header-info">
+            <div class="info-box">
+                <span class="label">Date de commande</span>
+                <span class="value">{{ commande.date }}</span>
+            </div>
+            <div class="info-box">
+                <span class="label">Statut</span>
+                <span class="value status">✅ Livrée</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-details-section">
+        <h2>Articles commandés</h2>
+        {% if articles %}
+            <table class="order-items-table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix Unitaire</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr class="item-row">
+                            <td>
+                                <span class="product-name">{{ article.produit_nom }}</span>
+                            </td>
+                            <td>
+                                <span class="quantity">{{ article.quantite }}</span>
+                            </td>
+                            <td>
+                                <span class="price">{{ article.prix_unitaire }}€</span>
+                            </td>
+                            <td>
+                                <span class="item-total">{{ article.prix_unitaire * article.quantite }}€</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-items">Aucun article dans cette commande</p>
+        {% endif %}
+    </div>
+
+    <div class="order-summary">
+        <div class="summary-box">
+            <h3>Récapitulatif</h3>
+            <div class="summary-row">
+                <span class="label">sous-total</span>
+                <span class="value">{{ commande.total }}€</span>
+            </div>
+            <div class="summary-row final">
+                <span class="label">Total</span>
+                <span class="value total-price">{{ commande.total }}€</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-actions">
+        <a href="/mes_commandes" class="btn-back">← Retour à mes commandes</a>
+        <a href="/catalogue" class="btn-continue">Continuer les achats</a>
+    </div>
+</div>
+{% endblock %}
