@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, session
 from database import DatabaseManager    
 from datetime import datetime
+import os
 
 app = Flask(__name__)
-app.secret_key = 'clé_secrète' # Pour chiffrer cookie
 db = DatabaseManager()
 
 @app.route('/')
@@ -355,4 +355,4 @@ def admin_supprimer_utilisateur(user_id):
     return redirect('/admin')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
