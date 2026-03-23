@@ -18,7 +18,9 @@ def catalogue():
 @app.route('/produit/<int:produit_id>')
 def produit(produit_id):
     produit = db.get_produit(produit_id)
-    return render_template('produit.html')
+    if not produit:
+        return redirect('/catalogue')
+    return render_template('produit.html', produit=produit)
 
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():

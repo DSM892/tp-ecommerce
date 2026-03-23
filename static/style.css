@@ -309,6 +309,15 @@ main {
     transform: translateY(-8px);
 }
 
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
 .produit-header {
     padding: 15px;
     background: #f8f9fa;

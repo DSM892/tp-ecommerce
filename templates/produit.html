@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <a href="/catalogue" class="back-link">← Retour au catalogue</a>
+</div>
+
+<div class="produit-detail">
+    <div class="product-detail-container">
+        <div class="product-image">
+            <div class="image-placeholder">
+                📦
+            </div>
+        </div>
+
+        <div class="product-details">
+            <h1>{{ produit.nom }}</h1>
+            
+            <div class="product-meta">
+                <span class="categorie-badge">{{ produit.categorie }}</span>
+                <span class="stock-badge {% if produit.stock > 10 %}in-stock{% elif produit.stock > 0 %}low-stock{% else %}out-stock{% endif %}">
+                    {% if produit.stock > 10 %}
+                        ✅ En stock
+                    {% elif produit.stock > 0 %}
+                        ⚠️ Stock limité ({{ produit.stock }})
+                    {% else %}
+                        ❌ Rupture de stock
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="price-section">
+                <p class="product-price">{{ produit.prix }}€</p>
+            </div>
+
+            <div class="description-section">
+                <h2>Description</h2>
+                <p>{{ produit.description }}</p>
+            </div>
+
+            <div class="stock-section">
+                <h3>Disponibilité</h3>
+                <p>{{ produit.stock }} article(s) disponible(s)</p>
+            </div>
+
+            <div class="action-buttons">
+                {% if produit.stock > 0 %}
+                    <a href="/ajouter_au_panier/{{ produit.id }}" class="btn-add-cart btn-large">
+                        🛒 Ajouter au panier
+                    </a>
+                {% else %}
+                    <button class="btn-add-cart btn-large" disabled>
+                        ❌ Rupture de stock
+                    </button>
+                {% endif %}
+                <a href="/catalogue" class="btn-secondary">
+                    ↩️ Continuer vos achats
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.product-detail-container {
+    display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-placeholder {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 1;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+}
+
+.product-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-details h1 {
+    font-size: 32px;
+    color: #333;
+    margin: 0;
+}
+
+.product-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.categorie-badge {
+    display: inline-block;
+    background-color: #e7f3ff;
+    color: #0066cc;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.price-section {
+    border-top: 2px solid #e0e0e0;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 20px 0;
+}
+
+.product-price {
+    font-size: 36px;
+    font-weight: bold;
+    color: #28a745;
+    margin: 0;
+}
+
+.description-section,
+.stock-section {
+    line-height: 1.6;
+    color: #555;
+}
+
+.description-section h2,
+.stock-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-large {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 16px;
+    min-height: 50px;
+}
+
+.btn-secondary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    background-color: #6c757d;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+@media (max-width: 768px) {
+    .product-detail-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .product-details h1 {
+        font-size: 24px;
+    }
+
+    .product-price {
+        font-size: 28px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-large,
+    .btn-secondary {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
