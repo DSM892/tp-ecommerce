@@ -2,29 +2,50 @@
 
 {% block content %}
 
-<h1>Mes Commandes</h1>
+<div class="page-header">
+    <h1>📋 Mes Commandes</h1>
+    <p>Historique de vos achats</p>
+</div>
+
 {% if commandes %}
-    <div>
-        <table>
+    <div class="orders-container">
+        <table class="orders-table">
             <thead>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Total</th>
+                <tr>
+                    <th>N° Commande</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Statut</th>
+                </tr>
             </thead>
             <tbody>
                 {% for c in commandes %}
-                    <tr>
-                        <td>{{ c.id }}</td>
-                        <td>{{ c.date }}</td>
-                        <td>{{ c.total }}</td>
+                    <tr class="order-row">
+                        <td>
+                            <span class="order-id">#{{ c.id }}</span>
+                        </td>
+                        <td>
+                            <span class="order-date">{{ c.date }}</span>
+                        </td>
+                        <td>
+                            <span class="order-total">{{ c.total }}€</span>
+                        </td>
+                        <td>
+                            <span class="order-status status-completed">✅ Livrée</span>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="/catalogue" style="display: inline-block; margin-top: 20px;">Continuer les achats</a>
+        <a href="/catalogue" class="btn-continue-shopping">Continuer les achats</a>
     </div>
 {% else %}
-    <p>Vous n'avez aucune commande</p>
+    <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h2>Aucune commande</h2>
+        <p>Vous n'avez pas encore passé de commande. Commencez vos achats dès maintenant !</p>
+        <a href="/catalogue" class="btn-discover">Découvrir le catalogue</a>
+    </div>
 {% endif %}
 
 {% endblock %}

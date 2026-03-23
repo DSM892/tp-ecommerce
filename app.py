@@ -3,7 +3,7 @@ from database import DatabaseManager
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'votre_clé_secrète_ici' #pour chiffrer cookie
+app.secret_key = 'clé_secrète' # Pour chiffrer cookie
 db = DatabaseManager()
 
 @app.route('/')
@@ -14,6 +14,13 @@ def accueil():
 def catalogue():
     produits = db.get_produits()
     return render_template('catalogue.html', produits=produits)
+
+@app.route('/produit/<int:produit_id>')
+def produit(produit_id):
+    produit = db.get_produit(produit_id)
+    if not produit:
+        return redirect('/catalogue')
+    return render_template('produit.html', produit=produit)
 
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
@@ -74,6 +81,7 @@ def ajouter_au_panier(produit_id):
         })
         session['panier'] = panier
         return redirect('/panier')
+    
 
 @app.route('/panier')
 def panier():
@@ -82,7 +90,7 @@ def panier():
     return render_template('panier.html', panier=panier, total=total)
 
 @app.route('/supprimer_du_panier/<int:produit_id>')
-def supprimer_panier(produit_id):
+def supprimer_du_panier(produit_id):
     panier = session.get('panier', [])
     panier = [a for a in panier if a['id'] != produit_id]
     session['panier'] = panier
@@ -138,11 +146,8 @@ def admin_ajouter_produit():
 def admin_modifier_produit():
     if session.get('user_role') != 'admin':
         return redirect('/login')
-    
     produit_id = request.form['id']
     updates = {}
-    
-    # Ajouter seulement les champs qui ont été remplis
     if request.form.get('nom'):
         updates['nom'] = request.form['nom']
     if request.form.get('prix'):
@@ -153,10 +158,8 @@ def admin_modifier_produit():
         updates['categorie'] = request.form['categorie']
     if request.form.get('stock'):
         updates['stock'] = int(request.form['stock'])
-    
     if updates:
         db.modifier_produit(produit_id, updates)
-    
     return redirect('/admin')
 
 @app.route('/admin/supprimer_produit/<int:produit_id>')

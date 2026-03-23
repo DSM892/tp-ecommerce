@@ -1,27 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Ma Boutique</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPSI B1 Shop - Votre boutique en ligne</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="/">Accueil</a>
-        <a href="/catalogue">Catalogue</a>
-        <a href="/panier">Panier</a>
-        {% if session.get('user_id') %}
-            <a href="{{ url_for('mes_commandes') }}">Mes Commandes</a>
-            {% if session.get('user_role') == 'admin' %}
-                <a href="{{ url_for('admin') }}">Administration</a>
-            {% endif %}
-            <a href="{{ url_for('deconnexion') }}">Se déconnecter</a>
-        {% else %}
-            <a href="{{ url_for('login') }}">Connexion</a>
-        {% endif %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="logo">🛍️ EPSI Shop</a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">🏠 Accueil</a>
+                <a href="/catalogue" class="nav-link">📦 Catalogue</a>
+                <a href="/panier" class="nav-link">🛒 Panier</a>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('mes_commandes') }}" class="nav-link">📋 Mes Commandes</a>
+                    {% if session.get('user_role') == 'admin' %}
+                        <a href="{{ url_for('admin') }}" class="nav-link admin-link">⚙️ Admin</a>
+                    {% endif %}
+                    <a href="{{ url_for('deconnexion') }}" class="nav-link logout-link">🚪 Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link login-link">🔐 Connexion</a>
+                {% endif %}
+            </div>
+        </div>
     </nav>
 
-    <main>
+    <main class="main-container">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>À propos</h3>
+                <p>EPSI B1 Shop est votre destination e-commerce de confiance pour des produits de qualité.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens utiles</h3>
+                <ul>
+                    <li><a href="/catalogue">Catalogue</a></li>
+                    <li><a href="/panier">Panier</a></li>
+                    <li><a href="/">Accueil</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>📧 contact@epsi-shop.fr</p>
+                <p>📞 +33 1 234 567 890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EPSI B1 Shop. Tous droits réservés.</p>
+        </div>
+    </footer>
 </body>
 </html>

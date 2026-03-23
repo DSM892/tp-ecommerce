@@ -1,8 +1,28 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Commande confirmée !</h1>
-<p>Merci pour votre achat.</p>
-<p><strong>Total : {{ total }} €</strong></p>
-<a href="/">Retour à l'accueil</a>
-<a href="/catalogue">Continuer les achats</a>
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">✅</div>
+        <h1>Commande confirmée !</h1>
+        <p class="success-message">Merci pour votre achat</p>
+        
+        <div class="order-details">
+            <div class="detail-row">
+                <span>Total de la commande :</span>
+                <span class="detail-value">{{ total }}€</span>
+            </div>
+        </div>
+
+        <div class="confirmation-message">
+            <p>📧 Un email de confirmation a été envoyé à votre adresse.</p>
+            <p>📦 Vous recevrez votre colis dans les 24h.</p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn-primary">🏠 Retour à l'accueil</a>
+            <a href="/catalogue" class="btn-secondary">Continuer les achats</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
